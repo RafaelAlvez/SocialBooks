@@ -40,7 +40,7 @@ public class LivroController {
 		Optional<Livro> livro = null;
 		try {
 			livro = livroService.Buscar(id);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (LivroServiceException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(livro);
