@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.algaworks.socialbooks.domain.Livro;
@@ -48,9 +49,7 @@ public class LivroController {
 	@PostMapping
 	public ResponseEntity<Void> salvar(@RequestBody Livro livro) {
 		livro = livroService.salvar(livro);
-
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
-
 		return ResponseEntity.created(uri).build();
 	}
 
@@ -67,7 +66,11 @@ public class LivroController {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id) {
 		livro.setId(id);
-		//livroService.save(livro);
+		try {
+			livroService.atualizar(livro, id);
+		} catch (LivroServiceException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

@@ -16,19 +16,21 @@ import com.algaworks.socialbooks.services.exception.LivroServiceException;
 @Service		
 public class LivroServiceImpl implements LivroService {
 	
-	private static final Logger loger = LoggerFactory.getLogger(LivroServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(LivroServiceImpl.class);
 	
 	@Autowired
 	private LivrosRepository livrosRepository;
 
 	@Override
 	public List<Livro> listarTodos() {
+		logger.info("listando todos os livros!");
 		List<Livro> livro = livrosRepository.findAll();
 		return livro;
 	}
 
 	@Override
 	public Optional<Livro> Buscar(Long id) {
+		logger.info("Buscar livro por id: " + id);
 		Optional<Livro> livro = livrosRepository.findById(id);
 		
 		if(!livro.isPresent())
@@ -46,8 +48,8 @@ public class LivroServiceImpl implements LivroService {
 
 	@Override
 	public void atualizar(Livro livro, Long id) {
-		// TODO Auto-generated method stub
-		
+		Buscar(id);
+		livrosRepository.save(livro);
 	}
 
 	@Override
