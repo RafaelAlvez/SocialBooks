@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,11 +34,11 @@ public class Livro {
 	private String resumo;
 	
 	@JsonInclude(Include.NON_NULL)
-	@Transient
-	private List<Comentario> comentarios;
+	private String autor;
 	
 	@JsonInclude(Include.NON_NULL)
-	private String autor;
+	@OneToMany(mappedBy = "livro")
+	private List<Comentarios> comentarios;
 	
 	public Livro() {
 		super();
@@ -88,11 +89,11 @@ public class Livro {
 		this.resumo = resumo;
 	}
 
-	public List<Comentario> getComentarios() {
+	public List<Comentarios> getComentarios() {
 		return comentarios;
 	}
 
-	public void setComentarios(List<Comentario> comentarios) {
+	public void setComentarios(List<Comentarios> comentarios) {
 		this.comentarios = comentarios;
 	}
 
