@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.algaworks.socialbooks.domain.Comentarios;
+import com.algaworks.socialbooks.domain.Comentario;
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.services.LivroService;
 
@@ -60,15 +60,28 @@ public class LivroController {
 	}
 
 	@PostMapping(value = "/comentarios/{id}")
-	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long idLivro, @RequestBody Comentarios comentario) {
+	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long idLivro, @RequestBody Comentario comentario) {
 		comentario = livroService.salvarComentario(idLivro, comentario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
 	@GetMapping(value = "/comentarios/{id}")
-	public ResponseEntity<List<Comentarios>> listarComentarios(@PathVariable("id") Long idLivro) {
-		List<Comentarios> listarComentarios = livroService.listarComentarios(idLivro);
+	public ResponseEntity<List<Comentario>> listarComentarios(@PathVariable("id") Long idLivro) {
+		List<Comentario> listarComentarios = livroService.listarComentarios(idLivro);
 		return ResponseEntity.status(HttpStatus.OK).body(listarComentarios);
 	}
+	
+	@PutMapping(value = "/comentarios/{id}")
+	public ResponseEntity<Void> atualizarComentario(@PathVariable("id") Long idLivro, @RequestBody Comentario comentario) {
+			livroService.atualizarComentario(idLivro, comentario);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
+	@DeleteMapping(value = "/comentarios/{id}")
+	public ResponseEntity<Void> deletarComentario(@PathVariable("id") Long idComentario) {
+		livroService.deletarComentario(idComentario);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+	
 }

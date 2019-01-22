@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.algaworks.socialbooks.domain.Comentarios;
+import com.algaworks.socialbooks.domain.Comentario;
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.repository.ComentariosRepository;
 import com.algaworks.socialbooks.repository.LivrosRepository;
@@ -70,23 +70,38 @@ public class LivroServiceImpl implements LivroService {
 		}
 	}
 	
-	public Comentarios salvarComentario(final Long idLivro, final Comentarios comentario) {
+	@Override
+	public Comentario salvarComentario(final Long idLivro, final Comentario comentario) {
 		logger.info("Adicionario comentario ao livro: " + idLivro);
 		Optional<Livro> livro = Buscar(idLivro);
 		
 		comentario.setLivro(livro.get());
 		comentario.setUsuario("Rafael.Alvez");
-		comentario.setAutor(livro.get().getAutor());
 		comentario.setData(new Date());
 		
 		return comentariosRepository.save(comentario);
 	}
 	
-	public List<Comentarios> listarComentarios(final Long idLivro) {
+	@Override
+	public List<Comentario> listarComentarios(final Long idLivro) {
 		Optional<Livro> buscar = Buscar(idLivro);
 		return buscar.get().getComentarios();
 	}
-	
-	
+
+	@Override
+	public void atualizarComentario(final Long idLivro, Comentario comentario) {
+		Buscar(idLivro);
+		comentariosRepository.save(comentario);
+	}
+
+	@Override
+	public void deletarComentario(final Long idComentario) {
+		logger.info("Deletar comentario");
+		try {
+			comentariosRepository.deleteById(idComentario);
+		} catch (EmptyResultDataAccessException e) {
+			throw new LivroServiceException("Comentário inexistente!");
+		}
+	}
 
 }
