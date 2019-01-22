@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class LivroController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> salvar(@RequestBody Livro livro) {
+	public ResponseEntity<Void> salvar(@Valid @RequestBody Livro livro) {
 		livro = livroService.salvar(livro);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -53,14 +55,14 @@ public class LivroController {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> atualizar(@RequestBody Livro livro, @PathVariable("id") Long id) {
+	public ResponseEntity<Void> atualizar(@Valid @RequestBody Livro livro, @PathVariable("id") Long id) {
 		livro.setId(id);
 		livroService.atualizar(livro, id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 	@PostMapping(value = "/comentarios/{id}")
-	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long idLivro, @RequestBody Comentario comentario) {
+	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long idLivro, @Valid @RequestBody Comentario comentario) {
 		comentario = livroService.salvarComentario(idLivro, comentario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.created(uri).build();
@@ -73,7 +75,7 @@ public class LivroController {
 	}
 	
 	@PutMapping(value = "/comentarios/{id}")
-	public ResponseEntity<Void> atualizarComentario(@PathVariable("id") Long idLivro, @RequestBody Comentario comentario) {
+	public ResponseEntity<Void> atualizarComentario(@PathVariable("id") Long idLivro, @Valid @RequestBody Comentario comentario) {
 			livroService.atualizarComentario(idLivro, comentario);
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

@@ -14,7 +14,7 @@ import com.algaworks.socialbooks.domain.Comentario;
 import com.algaworks.socialbooks.domain.Livro;
 import com.algaworks.socialbooks.repository.ComentariosRepository;
 import com.algaworks.socialbooks.repository.LivrosRepository;
-import com.algaworks.socialbooks.services.exception.LivroServiceException;
+import com.algaworks.socialbooks.services.exception.NaoEncontradoException;
 
 @Service		
 public class LivroServiceImpl implements LivroService {
@@ -40,7 +40,7 @@ public class LivroServiceImpl implements LivroService {
 		Optional<Livro> livro = livrosRepository.findById(id);
 		
 		if(!livro.isPresent())
-			throw new LivroServiceException("livro não encontrado!");
+			throw new NaoEncontradoException("livro não encontrado!");
 		
 		return livro;
 	}
@@ -66,7 +66,7 @@ public class LivroServiceImpl implements LivroService {
 			logger.info("Deletar livro: " + id);
 			livrosRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new LivroServiceException("O livro não pode ser encontrado!");
+			throw new NaoEncontradoException("O livro não pode ser encontrado!");
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class LivroServiceImpl implements LivroService {
 		try {
 			comentariosRepository.deleteById(idComentario);
 		} catch (EmptyResultDataAccessException e) {
-			throw new LivroServiceException("Comentário inexistente!");
+			throw new NaoEncontradoException("Comentário inexistente!");
 		}
 	}
 

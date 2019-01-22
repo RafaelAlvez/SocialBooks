@@ -7,5 +7,9 @@ import com.algaworks.socialbooks.domain.Autor;
 public interface AutorService {
 	
 	public List<Autor> listar();
+	
+	public Autor salvar(Autor autor);
+	
+	public Autor buscar(Long id);
 
 }
