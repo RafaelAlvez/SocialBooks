@@ -35,7 +35,6 @@ public class Comentario {
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@JsonInclude(Include.NON_NULL)
-	@NotNull(message = "Campo de preenchimento obrigatório")
 	private Date data;
 
 	@ManyToOne(fetch = FetchType.LAZY)

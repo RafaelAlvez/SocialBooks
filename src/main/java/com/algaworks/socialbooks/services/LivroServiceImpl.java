@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.algaworks.socialbooks.domain.Comentario;
@@ -71,12 +73,13 @@ public class LivroServiceImpl implements LivroService {
 	}
 	
 	@Override
-	public Comentario salvarComentario(final Long idLivro, final Comentario comentario) {
+	public Comentario adicionarComentario(final Long idLivro, final Comentario comentario) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		logger.info("Adicionario comentario ao livro: " + idLivro);
 		Optional<Livro> livro = Buscar(idLivro);
 		
 		comentario.setLivro(livro.get());
-		comentario.setUsuario("Rafael.Alvez");
+		comentario.setUsuario(auth.getName());
 		comentario.setData(new Date());
 		
 		return comentariosRepository.save(comentario);

@@ -66,7 +66,7 @@ public class LivroController {
 
 	@PostMapping(value = "/comentarios/{id}")
 	public ResponseEntity<Void> adicionarComentario(@PathVariable("id") Long idLivro, @Valid @RequestBody Comentario comentario) {
-		comentario = livroService.salvarComentario(idLivro, comentario);
+		comentario = livroService.adicionarComentario(idLivro, comentario);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
 		return ResponseEntity.created(uri).build();
 	}

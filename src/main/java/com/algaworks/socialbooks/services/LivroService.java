@@ -18,7 +18,7 @@ public interface LivroService {
 	
 	public void deletar(final Long id);
 	
-	public Comentario salvarComentario(final Long idLivro, final Comentario comentario);
+	public Comentario adicionarComentario(final Long idLivro, final Comentario comentario);
 	
 	public List<Comentario> listarComentarios(final Long idLivro);
 	
